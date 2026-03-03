@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>LITA HOTELS • Guest Services</title>
+  <style>
+    :root {
+      --primary: #0066cc;
+      --primary-dark: #004c99;
+      --success: #28a745;
+      --warning: #ffc107;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --star-gold: #ffc107;
+      --border-radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.12);
+      --transition: all 0.2s ease;
+    }
+
+    /* Dark Mode */
+    .dark {
+      --primary: #4da3ff;
+      --primary-dark: #0066cc;
+      --success: #34d058;
+      --warning: #ffd60a;
+      --light: #1e2937;
+      --dark: #f1f5f9;
+      --gray: #94a3b8;
+      --star-gold: #ffd60a;
+      --shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      color: var(--dark);
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: background 0.4s ease;
+    }
+
+    .dark body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      background: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .dark .container {
+      background: var(--light);
+    }
+
+    .header {
+      background: var(--primary);
+      color: white;
+      padding: 32px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .header-icon {
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .header-icon:hover { transform: scale(1.15); }
+
+    .header p { opacity: 0.9; font-size: 1.1rem; }
+
+    .content { padding: 32px 24px; }
+
+    .room-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 32px;
+      font-size: 1.1rem;
+      color: var(--gray);
+      position: relative;
+    }
+
+    .room-info strong {
+      display: block;
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .info-icon {
+      font-size: 1.6rem;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--gray);
+    }
+
+    .info-icon:hover { transform: scale(1.2); color: white; }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .option-btn {
+      background: var(--light);
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      padding: 20px 16px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dark .option-btn {
+      background: #334155;
+      border-color: #475569;
+    }
+
+    .option-btn:hover { border-color: var(--primary); background: #e3f2fd; transform: translateY(-3px); }
+    .dark .option-btn:hover { background: #475569; }
+
+    .option-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .emoji { font-size: 2.6rem; }
+
+    .notes { margin: 24px 0; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--gray);
+    }
+
+    .rating-container {
+      display: none;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .rating-container.visible { display: block; }
+
+    .stars {
+      font-size: 2.8rem;
+      cursor: pointer;
+      user-select: none;
+      display: inline-flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+    }
+
+    .star { color: #e0e0e0; transition: color 0.15s; }
+    .dark .star { color: #475569; }
+
+    .star:hover,
+    .star:hover ~ .star,
+    .star.selected,
+    .star.selected ~ .star { color: var(--star-gold); }
+
+    .rating-text {
+      margin-top: 12px;
+      font-size: 1.1rem;
+      color: var(--gray);
+      min-height: 1.4em;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 12px;
+      border: 1px solid #ced4da;
+      border-radius: 10px;
+      font-size: 1rem;
+      resize: vertical;
+      transition: var(--transition);
+      background: white;
+      color: var(--dark);
+    }
+
+    .dark textarea {
+      background: #334155;
+      border-color: #475569;
+      color: var(--dark);
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+    }
+
+    .submit-area {
+      text-align: center;
+      margin: 32px 0;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 6px 20px rgba(0,102,204,0.25);
+      min-width: 220px;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0,102,204,0.35);
+    }
+
+    button:disabled {
+      background: #adb5bd;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .status {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 10px;
+      font-weight: 500;
+      text-align: center;
+      display: none;
+    }
+
+    .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .dark .success { background: #14532d; color: #86efac; border-color: #4ade80; }
+
+    /* Progress Tracker - UNCHANGED from previous version */
+    .progress-container { display: none; margin-top: 40px; padding: 24px; background: var(--light); border-radius: var(--border-radius); box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
+    .progress-header { font-size: 1.4rem; margin-bottom: 20px; text-align: center; color: var(--primary); }
+    .progress-steps { list-style: none; counter-reset: step-counter; margin-bottom: 24px; }
+    .progress-step { display: flex; align-items: center; margin-bottom: 16px; position: relative; padding-left: 40px; }
+    .progress-step:before { content: counter(step-counter); counter-increment: step-counter; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; background: var(--gray); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: bold; transition: var(--transition); }
+    .progress-step.active:before { background: var(--success); }
+    .progress-step .step-icon { font-size: 1.8rem; margin-right: 16px; }
+    .progress-step .step-text { font-size: 1.1rem; }
+    .progress-step .step-time { margin-left: auto; color: var(--gray); font-size: 0.95rem; }
+    .progress-bar { height: 6px; background: #dee2e6; border-radius: 3px; margin: 20px 0; position: relative; overflow: hidden; }
+    .dark .progress-bar { background: #475569; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--success), #34d058); width: 0; transition: width 0.6s ease; }
+    .confirmation-area { text-align: center; margin-top: 32px; }
+    #confirmReturnBtn { background: var(--warning); color: var(--dark); font-size: 1.1rem; padding: 14px 36px; box-shadow: 0 4px 16px rgba(255,193,7,0.3); }
+    #confirmReturnBtn:hover:not(:disabled) { background: #e0a800; }
+    #confirmReturnBtn:disabled { background: #ced4da; }
+    #returnStatus { margin-top: 16px; font-size: 1rem; color: var(--success); font-weight: 500; display: none; }
+
+    /* Preferences Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 360px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .dark .modal-content {
+      background: var(--light);
+      color: var(--dark);
+    }
+
+    .modal h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: var(--primary);
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .dark .toggle-row { border-color: #475569; }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 28px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #cbd5e1;
+      transition: .3s;
+      border-radius: 50px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background: var(--success);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .modal-close {
+      display: block;
+      margin: 24px auto 0;
+      background: var(--gray);
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 8px; }
+      .header, .content { padding: 24px 16px; }
+      .options-grid { grid-template-columns: 1fr 1fr; }
+      button { width: 100%; padding: 16px; }
+      .room-info { gap: 24px; flex-wrap: wrap; justify-content: space-around; }
+    }
+
+    .fade-in { animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>LITA HOTELS <span class="header-icon" id="preferencesIcon" title="Preferences">⚙️</span></h1>
+    <p>Guest Services & Robot Delivery</p>
+  </div>
+
+  <div class="content" id="requestForm">
+    <div class="room-info">
+      <div>
+        <strong id="room-number">—</strong>
+        <span>Room</span>
+      </div>
+      <div>
+        <strong id="guest-name">—</strong>
+        <span>Guest</span>
+      </div>
+      <span class="info-icon" id="myStayIcon" title="My Stay">🗓️</span>
+    </div>
+
+    <div class="options-grid">
+      <button class="option-btn" data-request="concierge"><div class="emoji">🔔</div><div>Concierge</div></button>
+      <button class="option-btn" data-request="chat"><div class="emoji">💬</div><div>Chat</div></button>
+      <button class="option-btn" data-request="food"><div class="emoji">🍔</div><div>Food & Drinks</div></button>
+      <button class="option-btn" data-request="towel"><div class="emoji">🛁</div><div>Towels / Linens</div></button>
+      <button class="option-btn" data-request="amenity"><div class="emoji">🧴</div><div>Toiletries / Amenities</div></button>
+      <button class="option-btn" data-request="other"><div class="emoji">❓</div><div>Other Request</div></button>
+      <button class="option-btn" data-request="explore"><div class="emoji">🏨</div><div>Other LITA Hotels</div></button>
+      <button class="option-btn" data-request="feedback"><div class="emoji">📝</div><div>Leave Feedback</div></button>
+    </div>
+
+    <div class="notes">
+      <label for="notes">Additional instructions, special requests, or feedback:</label>
+
+      <div class="rating-container" id="ratingContainer">
+        <div class="stars" id="stars">
+          <span class="star" data-value="5">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="1">★</span>
+        </div>
+        <div class="rating-text" id="ratingText">How would you rate your stay?</div>
+      </div>
+
+      <textarea id="notes" placeholder="We'd love to hear from you! Tell us what made your stay special, how we can improve, any favorite moments, suggestions for the team, or just say hi 😊 Your thoughts help us create even better experiences."></textarea>
+    </div>
+
+    <div class="submit-area">
+      <button type="submit" id="submitBtn" disabled>Submit Request →</button>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+
+  <!-- Progress Tracker - EXACTLY the same as before -->
+  <div class="progress-container" id="progressTracker">
+    <div class="progress-header">Tracking Your Robot</div>
+    <ul class="progress-steps">
+      <li class="progress-step" data-step="1"><span class="step-icon">📩</span><span class="step-text">Request Received</span><span class="step-time"></span></li>
+      <li class="progress-step" data-step="2"><span class="step-icon">🛠️</span><span class="step-text">Preparing Order</span><span class="step-time"></span></li>
+      <li class="progress-step" data-step="3"><span class="step-icon">🚀</span><span class="step-text">On the Way</span><span class="step-time"></span></li>
+      <li class="progress-step" data-step="4"><span class="step-icon">🏠</span><span class="step-text">Arrived at Door</span><span class="step-time"></span></li>
+    </ul>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="confirmation-area">
+      <button id="confirmReturnBtn" disabled>I've got my delivery – Send robot back</button>
+      <div id="returnStatus"></div>
+    </div>
+    <div class="submit-area" style="margin-top: 24px;">
+      <button type="button" id="newRequestBtn" style="display: none;">Make Another Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Preferences Modal -->
+<div id="preferencesModal" class="modal">
+  <div class="modal-content">
+    <h2>Preferences</h2>
+    
+    <div class="toggle-row">
+      <span style="font-size:1.1rem;">Dark Mode</span>
+      <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <button class="modal-close" id="closeModal">Done</button>
+  </div>
+</div>
+
+<script>
+  const roomNumberEl    = document.getElementById('room-number');
+  const guestNameEl     = document.getElementById('guest-name');
+  const submitBtn       = document.getElementById('submitBtn');
+  const statusDiv       = document.getElementById('status');
+  const notes           = document.getElementById('notes');
+  const requestForm     = document.getElementById('requestForm');
+  const progressTracker = document.getElementById('progressTracker');
+  const progressFill    = document.getElementById('progressFill');
+  const newRequestBtn   = document.getElementById('newRequestBtn');
+  const confirmReturnBtn= document.getElementById('confirmReturnBtn');
+  const returnStatus    = document.getElementById('returnStatus');
+  const ratingContainer = document.getElementById('ratingContainer');
+  const stars           = document.querySelectorAll('.star');
+  const ratingText      = document.getElementById('ratingText');
+  const preferencesIcon = document.getElementById('preferencesIcon');
+  const myStayIcon      = document.getElementById('myStayIcon');
+  const modal           = document.getElementById('preferencesModal');
+  const darkToggle      = document.getElementById('darkModeToggle');
+  const closeModalBtn   = document.getElementById('closeModal');
+
+  let selectedType = null;
+  let currentStep = 0;
+  let arrived = false;
+  let selectedRating = 0;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const room = urlParams.get('room') || "712";
+  const guest = urlParams.get('guest') || "Benjamin";
+
+  roomNumberEl.textContent = room;
+  guestNameEl.textContent = guest;
+
+  // Load saved dark mode
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.documentElement.classList.add('dark');
+    darkToggle.checked = true;
+  }
+
+  // Preferences Modal
+  preferencesIcon.addEventListener('click', () => {
+    modal.style.display = 'flex';
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  // Dark Mode Toggle
+  darkToggle.addEventListener('change', () => {
+    if (darkToggle.checked) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false');
+    }
+  });
+
+  myStayIcon.addEventListener('click', () => {
+    alert("My Stay\n\nCheck-in: March 1, 2026\nCheck-out: March 5, 2026\nRoom: " + room + "\nGuest: " + guest);
+  });
+
+  // Rest of the script (option selection, stars, submit, progress, etc.) is 100% unchanged
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedType = btn.dataset.request;
+
+      ratingContainer.classList.toggle('visible', selectedType === 'feedback');
+      selectedRating = 0;
+      updateStars(0);
+      ratingText.textContent = "How would you rate your stay?";
+
+      const isFeedbackOrExplore = selectedType === 'feedback' || selectedType === 'explore';
+      const isConciergeOrChat   = selectedType === 'concierge' || selectedType === 'chat';
+
+      submitBtn.disabled = (selectedType === 'feedback' && selectedRating === 0);
+      submitBtn.textContent = isConciergeOrChat ? "Contact →" : (isFeedbackOrExplore ? "Submit →" : "Call Robot →");
+    });
+  });
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      selectedRating = parseInt(star.dataset.value);
+      updateStars(selectedRating);
+      ratingText.textContent = `${selectedRating} star${selectedRating !== 1 ? 's' : ''} — Thank you!`;
+      submitBtn.disabled = false;
+    });
+
+    star.addEventListener('mouseover', () => {
+      if (selectedRating === 0) updateStars(parseInt(star.dataset.value));
+    });
+
+    star.addEventListener('mouseout', () => {
+      if (selectedRating === 0) updateStars(0);
+    });
+  });
+
+  function updateStars(rating) {
+    stars.forEach(s => {
+      const val = parseInt(s.dataset.value);
+      s.classList.toggle('selected', val <= rating);
+    });
+  }
+
+  submitBtn.addEventListener('click', () => {
+    if (!selectedType) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+
+    const payload = {
+      room, guest, type: selectedType,
+      rating: selectedType === 'feedback' ? selectedRating : null,
+      notes: notes.value.trim(),
+      timestamp: new Date().toISOString()
+    };
+
+    console.log("Sending:", payload);
+
+    setTimeout(() => {
+      if (selectedType === "explore" || selectedType === "feedback") {
+        statusDiv.className = 'status success fade-in';
+        statusDiv.textContent = selectedType === "explore" 
+          ? "Opening LITA Hotels directory..." 
+          : "Thank you so much for your feedback! 💙 We truly appreciate it.";
+        statusDiv.style.display = 'block';
+        setTimeout(resetForm, 3800);
+      } else if (selectedType === "concierge" || selectedType === "chat") {
+        statusDiv.className = 'status success fade-in';
+        statusDiv.textContent = selectedType === "concierge" 
+          ? "Connecting you to our concierge team..." 
+          : "Opening live chat – someone will be with you shortly!";
+        statusDiv.style.display = 'block';
+        setTimeout(resetForm, 3800);
+      } else {
+        showSuccess();
+        startProgressTracking();
+      }
+    }, 1400);
+  });
+
+  function showSuccess() {
+    statusDiv.className = 'status success fade-in';
+    statusDiv.textContent = "Request sent! Your robot is on the way...";
+    statusDiv.style.display = 'block';
+    requestForm.style.display = 'none';
+    progressTracker.style.display = 'block';
+    progressTracker.classList.add('fade-in');
+  }
+
+  function startProgressTracking() {
+    const steps = document.querySelectorAll('.progress-step');
+    const totalSteps = steps.length;
+
+    function updateStep(step) {
+      if (step > currentStep) {
+        for (let i = currentStep; i < step; i++) {
+          steps[i].classList.add('active');
+          steps[i].querySelector('.step-time').textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        }
+        currentStep = step;
+        progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
+
+        if (currentStep === totalSteps) {
+          arrived = true;
+          confirmReturnBtn.disabled = false;
+        }
+      }
+    }
+
+    updateStep(1);
+    setTimeout(() => updateStep(2), 3000);
+    setTimeout(() => updateStep(3), 7000);
+    setTimeout(() => updateStep(4), 11000);
+  }
+
+  confirmReturnBtn.addEventListener('click', () => {
+    if (!arrived) return;
+    confirmReturnBtn.disabled = true;
+    confirmReturnBtn.textContent = "Sending robot home...";
+    console.log("Robot return requested", { room, timestamp: new Date().toISOString() });
+    setTimeout(() => {
+      returnStatus.textContent = "Robot is returning to base for the next task ✓";
+      returnStatus.style.display = 'block';
+      newRequestBtn.style.display = 'block';
+    }, 1800);
+  });
+
+  function resetForm() {
+    requestForm.style.display = 'block';
+    progressTracker.style.display = 'none';
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+    notes.value = '';
+    selectedType = null;
+    selectedRating = 0;
+    updateStars(0);
+    ratingContainer.classList.remove('visible');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submit Request →";
+    statusDiv.style.display = 'none';
+    currentStep = 0;
+    arrived = false;
+    progressFill.style.width = '0%';
+    document.querySelectorAll('.progress-step').forEach(s => {
+      s.classList.remove('active');
+      s.querySelector('.step-time').textContent = '';
+    });
+    newRequestBtn.style.display = 'none';
+    confirmReturnBtn.disabled = true;
+    confirmReturnBtn.textContent = "I've got my delivery – Send robot back";
+    returnStatus.style.display = 'none';
+  }
+
+  newRequestBtn.addEventListener('click', resetForm);
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.style.display = 'none';
+  });
+</script>
+</body>
+</html>
